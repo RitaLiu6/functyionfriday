@@ -1,0 +1,35 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(tidytext)
+library(dplyr)
+library(stringr)
+```
+```{r}
+ original_books<-tibble(line = 1:4, text = c("Because I could not stop for Death -",
+          "He kindly stopped for me -",
+          "The Carriage held but just Ourselves -",
+          "and Immortality")) 
+```
+
+## unnest_tokens()
+```{r}
+tidy_books <- original_books %>%
+  unnest_tokens(word, text)
+
+tidy_books
+```
+
+## get_sentiments() 
+```{r}
+positive <- get_sentiments("bing") %>%
+  filter(sentiment == "positive")
+positive
+```
+
