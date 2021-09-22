@@ -21,7 +21,7 @@ library(stringr)
 ## unnest_tokens()
 ```{r}
 tidy_books <- original_books %>%
-  unnest_tokens(word, text)
+  unnest_tokens(word, text,token = 'ngrams',n = 2)
 
 tidy_books
 ```
@@ -31,5 +31,8 @@ tidy_books
 positive <- get_sentiments("bing") %>%
   filter(sentiment == "positive")
 positive
+```
+```{r}
+stop_words
 ```
 
