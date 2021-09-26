@@ -42,8 +42,15 @@ tidy_books
 ```
 
 ## get_sentiments() 
+
+<br> The get_sentiments is a function that allows us to get specific sentiment lexicons with appropriate categories for the words. The three general purpose lexicons are AFINN, bing, nrc: 
+
+  # AFINN - a lexicon measuring sentiment with a numeric score between -5 and +5
+  # Bing - A binary approach that divides words into either "positive" or "negative"
+  # NRC - categorizes words in a binary fashion ("yes"/"no") into categories of positive, negative, anger, anticipation, disgust, fear, joy, sadness, surprise, and trust. 
+
 ```{r}
-positive <- get_sentiments("bing") %>% # get_sentiments is a function that allows us to get specific sentiment lexicons with appropriate categories for the words. The three general purpose lexicons are AFINN, bing, nrc
+positive <- get_sentiments("bing") %>% 
   filter(sentiment == "positive") # This filters the entire dataset to look for unigrams (single words) that have positive connotations
 positive
 ```
