@@ -1,0 +1,37 @@
+---
+title: "Short Practice Question"
+output: html_notebook
+---
+
+
+```{r}
+library(gutenbergr)
+library(tidytext)
+library(janeaustenr)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+```
+
+# 1. Pick a book of your choice 
+Replace the title with your favorite book
+```{r}
+gutenberg_works() %>%
+  filter(title == "The Smalcald Articles")
+smalcald_articles <- gutenberg_download(768,mirror = "http://mirrors.xmission.com/gutenberg/")
+```
+
+
+# 2. Use unnest_token to clean the data 
+Desription: 
+
+# 3. Filter out the stop words
+Description of that step 
+
+# 4. Most commonly used words
+Description: 
+
+# 5. Use get_sentiment to create a visualization of your choice
+Description: 
+
+
