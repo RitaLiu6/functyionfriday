@@ -29,8 +29,9 @@ original_books <- austen_books() %>%
   ungroup()
 original_books
 ```
-## Introduction
 
+## Introduction
+What is tidytext and why is it useful?
 ## unnest_tokens()
 ```{r}
 tidy_books <- original_books %>%
@@ -64,6 +65,21 @@ cleaned_books <- tidy_books %>%
             by = 'word')
 cleaned_books
 ```
+
+```{r}
+#loading required packages
+library(dplyr)
+library(janeaustenr)
+library(tidytext)
+
+book_words <- austen_books() %>%
+  unnest_tokens(word, text) %>% #using unnest_tokens to turn sentences from each book into a long list of words for analysis, there are a total of 725,055 rows in this dataset.
+    anti_join(stop_words, by = "word") %>% #using dplyr ro get rid of stop words (explain dpyr)
+  count(book, word, sort = TRUE) #counting the occurance of each word and sorting them by how often they occur. 
+
+book_words
+```
+
 
 # Application Uses 
 
