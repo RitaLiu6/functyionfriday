@@ -6,6 +6,11 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+
+# Resource:  
+
+## Setting Up R: 
 ```{r}
 library(tidytext)
 library(janeaustenr)
@@ -13,6 +18,7 @@ library(dplyr)
 library(stringr)
 library(ggplot2)
 ```
+
 ```{r}
 # load materials
 original_books <- austen_books() %>%
@@ -23,6 +29,7 @@ original_books <- austen_books() %>%
   ungroup()
 original_books
 ```
+## Introduction
 
 ## unnest_tokens()
 ```{r}
@@ -32,13 +39,6 @@ tidy_books <- original_books %>%
 tidy_books
 ```
 
-# stop_words
-```{r}
-cleaned_books <- tidy_books %>%
-  anti_join(stop_words %>% filter(lexicon == "SMART"),
-            by = 'word')
-cleaned_books
-```
 ## get_sentiments() 
 ```{r}
 positive <- get_sentiments("bing") %>%
@@ -56,6 +56,14 @@ cleaned_books %>%
   
 ```
 
+# stop_words and interaction with dplyr
+```{r}
+cleaned_books <- tidy_books %>%
+  anti_join(stop_words %>% filter(lexicon == "SMART"),
+            by = 'word')
+cleaned_books
+```
 
+# Application Uses 
 
 
