@@ -34,7 +34,8 @@ original_books
 ## unnest_tokens()
 ```{r}
 tidy_books <- original_books %>%
-  unnest_tokens(word, text)
+  filter(book == 'Sense & Sensibility') %>% 
+  unnest_tokens(word, text, token = "ngrams", n = 3)
 
 tidy_books
 ```
