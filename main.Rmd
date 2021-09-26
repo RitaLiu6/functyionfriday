@@ -42,8 +42,8 @@ tidy_books
 
 ## get_sentiments() 
 ```{r}
-positive <- get_sentiments("bing") %>%
-  filter(sentiment == "positive")
+positive <- get_sentiments("bing") %>% # get_sentiments is a function that allows us to get specific sentiment lexicons with appropriate categories for the words. The three general purpose lexicons are AFINN, bing, nrc
+  filter(sentiment == "positive") # This filters the entire dataset to look for unigrams (single words) that have positive connotations
 positive
 ```
 ```{r}
