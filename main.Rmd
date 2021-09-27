@@ -35,9 +35,8 @@ original_books <- austen_books() %>%
 original_books
 ```
 
-## Introduction
-What is tidytext and why is it useful?
-
+## What is Tidytext and why is it useful?
+Tidytext is a package that allows for easier text analysis and gives analysts tools needed for text mining tools that can be used in conjunction with packages we already know, such as dplyr and ggplot2. The package makes the manipulation, representation, and visualization of text-driven datasets and analyses easier to manage. Tidytext also features sentiment analysis, which can help analysts draw large, general conclusions regarding the content of a given text through the creation of visualizations and through calculating numerical summaries in the realm of textual analysis such as a list of the most used words in a given text. Tidytext is essentially an extremely useful supplementary tool to be used in conjunction with packages we already know.
 
 ## Use unnest_tokens() to process the data frame
 `unnest_tokens()` in tidytext helps us to split a column into shorter phrases of our choice. The arguments are as following:  
