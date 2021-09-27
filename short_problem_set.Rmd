@@ -14,24 +14,25 @@ library(ggplot2)
 ```
 
 # 1. Pick a book of your choice 
-Replace the title with your favorite book
+Use `gutenberg_works()` to filter out a book of your choice and replace 768 with `gutenberg_id` to download the text of the book. Below is an exmple. 
 ```{r}
 gutenberg_works() %>%
   filter(title == "The Smalcald Articles")
-smalcald_articles <- gutenberg_download(768,mirror = "http://mirrors.xmission.com/gutenberg/")
+smalcald_articles <- gutenberg_download(273,mirror = "http://mirrors.xmission.com/gutenberg/")
+smalcald_articles
 ```
 
 
 # 2. Use unnest_token to clean the data 
-Desription: 
+Use unnest_token to split the line into words. 
 
 # 3. Filter out the stop words
-Description of that step 
+Filter out the stop words from the previous step. 
 
 # 4. Most commonly used words
-Description: 
+Find out 15 most frequently used words in the book, after filtering out the stop words. 
 
 # 5. Use get_sentiment to create a visualization of your choice
-Description: 
+Play with get_sentiment and create a visualization of your choice. Feel free to use your cleaned book from previous step. 
 
 
