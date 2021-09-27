@@ -60,7 +60,7 @@ tidy_books %>%
 ```
 
 
-# stop_words and interaction with dplyr
+# Using Tidytext with dplyr & Stop words
 ```{r}
 cleaned_books <- tidy_books %>%
   anti_join(stop_words %>% filter(lexicon == "SMART"),
@@ -70,9 +70,6 @@ cleaned_books
 
 ```{r}
 #loading required packages
-library(dplyr)
-library(janeaustenr)
-library(tidytext)
 
 book_words <- austen_books() %>%
   unnest_tokens(word, text) %>% #using unnest_tokens to turn sentences from each book into a long list of words for analysis, there are a total of 725,055 rows in this dataset.
