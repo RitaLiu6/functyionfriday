@@ -1,0 +1,84 @@
+---
+title: "Short Practice Question"
+output: html_notebook
+---
+
+
+```{r}
+library(gutenbergr)
+library(tidytext)
+library(janeaustenr)
+library(dplyr)
+library(stringr)
+library(ggplot2)
+```
+
+# 1. Pick a book of your choice 
+Use `gutenberg_works()` to filter out a book of your choice and replace 768 with `gutenberg_id` to download the text of the book. Below is an exmple. 
+```{r}
+books <- gutenberg_download(1,mirror = "http://mirrors.xmission.com/gutenberg/")
+gutenberg_works()
+  
+```
+
+
+```{r}
+gutenberg_works() %>%
+  filter(title == "The Declaration of Independence of the United States of America")
+```
+
+
+# 2. Use unnest_token to clean the data 
+Use unnest_token to split the line into words. 
+
+```{r}
+tidy_book_problemset <- books%>%
+  unnest_tokens(word, text)
+tidy_book_problemset
+```
+
+
+
+# 3. Filter out the stop words
+Filter out the stop words from the previous step. 
+
+```{r}
+stop_words_dataset <- tidy_book_problemset %>%
+  anti_join(stop_words %>% filter(lexicon == "SMART"),
+            by = 'word')
+stop_words_dataset
+```
+
+
+# 4. Most commonly used words
+Find out 15 most frequently used words in the book, after filtering out the stop words. 
+
+```{r}
+stop_words_dataset %>% 
+  mutate(book = "The Declaration of Independence of the United States of America") %>%
+  count(book, word, sort = TRUE) %>% 
+  anti_join(stop_words) %>% 
+  bind_tf_idf(word, book, n) %>%
+  arrange(desc(tf))
+```
+
+
+# 5. Use get_sentiment to create a visualization of your choice
+Play with get_sentiment and create a visualization of your choice. Feel free to use your cleaned book from previous step. 
+
+```{r}
+positivity <- get_sentiments("bing") %>% 
+  filter(sentiment == "positive") # This filters the entire dataset to look for unigrams (single words) that have positive connotations
+positivity
+```
+
+
+```{r}
+stop_words_dataset %>% 
+  semi_join(positivity, by = "word") %>%
+  count(word, sort = TRUE) %>%
+  slice(0:15) %>% 
+  ggplot(aes(x = n , y = reorder(word,n))) +
+  geom_col()
+```
+
