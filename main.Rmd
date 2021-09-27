@@ -4,8 +4,12 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      error = TRUE)
 ```
+
 
 
 ## Resources
@@ -47,17 +51,9 @@ Tidytext is a package that allows for easier text analysis and gives analysts to
 
 ```{r}
 tidy_books <- original_books %>%
-  filter(book == 'Sense & Sensibility') %>% 
   unnest_tokens(word, text)
-# token = "regex",  pattern = "Chapter [\\\\d]" ?? How to use regex
+# token = 'regex', pattern = "Chapter|CHAPTER [\\dIVXLC]"
 tidy_books
-```
-```{r}
-tidy_books %>% 
-  count(book, word, sort = TRUE) %>% 
-  anti_join(stop_words) %>% 
-  bind_tf_idf(word, book, n) %>%
-  arrange(desc(tf))
 ```
 
 
@@ -75,6 +71,7 @@ common_words_twist <- oliver_twist %>%
 
 head(common_words_twist, 15)
 ```
+
 As we can see, the list of words that our code returns is quite uninteresting. For analysis, words such as "the," "and," "to," and "of," essentially filler words, are usually not too useful in terms of textual analysis. To prevent this from happening, we can get rid of the *stop words*. Stop words are a set of words that contain little useful information to analysis. In moving forward with our analysis, we can get rid of these words using dplyr to get a more useful set of words to work with.
 
 ```{r}
@@ -86,6 +83,7 @@ common_words_twist_sub <- oliver_twist %>%
 twist <- head(common_words_twist_sub, 15)
 twist
 ```
+
 We can see in our table above that the entire list of 15 most-used words has completely changed after removing our stop words. Removing stop words can prove to be a useful tool in our analysis. Finally, we can use ggplot2 to visualize our results.
 
 ```{r}
@@ -99,8 +97,20 @@ twist %>% #take our list of the top 15 most commonly used words
   geom_col() #create a bar graph
 ```
 
+## use bind_tf_idf to get term frequency and importance
+`use_bind_tf_idf`can be used to find term frequency and inverse document frequency of a tidy text dataset.Term frequency shows the frequency the word is used in books provided, weighted by the length of the book. Inverse term frequency indicates number of documents in the corpus that contain the word. The multiply of tf and idf is often used to show how important a word is to a document in a collection. For more information about tf and idf, you can look at [this](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).   
+The arguments are following: 
+* term: the column name that contains the term  
+* document: column name that contains name or ID of the document  
+* n: column name that contains the counts of the term
 
-## get_sentiments() 
+```{r}
+tidy_books %>% 
+  count(book, word, sort = TRUE) %>% 
+  anti_join(stop_words) %>% 
+  bind_tf_idf(word, book, n) %>%
+  arrange(desc(tf_idf))
+```
 
 <br> The get_sentiments is a function that allows us to get specific sentiment lexicons with appropriate categories for the words. The three general purpose lexicons are AFINN, bing, nrc: 
 
