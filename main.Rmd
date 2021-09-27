@@ -82,6 +82,11 @@ book_words <- austen_books() %>%
 book_words
 ```
 
+
+```{r}
+# add an example of a viz involving get_sentiments
+```
+
 ## get_sentiments() 
 
 <br> The get_sentiments is a function that allows us to get specific sentiment lexicons with appropriate categories for the words. The three general purpose lexicons are AFINN, bing, nrc: 
@@ -108,5 +113,5 @@ cleaned_books %>%
 
 
 # Application Uses 
-Think about senarios that we can use tidytext to process information? Why it is useful? Can you think of limitation of it? 
+Think about scenarios that we can use tidytext to process information? Why it is useful? Can you think of limitation of it? 
 
