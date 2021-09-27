@@ -39,9 +39,8 @@ original_books <- austen_books() %>%
 original_books
 ```
 
-## Introduction
-What is tidytext and why is it useful?
-
+## What is Tidytext and why is it useful?
+Tidytext is a package that allows for easier text analysis and gives analysts tools needed for text mining tools that can be used in conjunction with packages we already know, such as dplyr and ggplot2. The package makes the manipulation, representation, and visualization of text-driven datasets and analyses easier to manage. Tidytext also features sentiment analysis, which can help analysts draw large, general conclusions regarding the content of a given text through the creation of visualizations and through calculating numerical summaries in the realm of textual analysis such as a list of the most used words in a given text. Tidytext is essentially an extremely useful supplementary tool to be used in conjunction with packages we already know.
 
 ## Use unnest_tokens() to process the data frame
 `unnest_tokens()` in tidytext helps us to split a column into shorter phrases of our choice. The arguments are as following:  
@@ -73,12 +72,13 @@ library(tidytext)
 
 book_words <- austen_books() %>%
   unnest_tokens(word, text) %>% #using unnest_tokens to turn sentences from each book into a long list of words for analysis, there are a total of 725,055 rows in this dataset.
-    anti_join(stop_words, by = "word") %>% #using dplyr ro get rid of stop words (explain dpyr)
-  count(book, word, sort = TRUE) #counting the occurance of each word and sorting them by how often they occur. 
+    anti_join(stop_words, by = "word") %>% #using dplyr to get rid of stop words (explain dpyr)
+  count(book, word, sort = TRUE) #counting the occurrence of each word and sorting them by how often they occur. 
 
 book_words
 ```
 
+<<<<<<< HEAD
 ## use bind_tf_idf to get term frequency and importance
 `use_bind_tf_idf`can be used to find term frequency and inverse document frequency of a tidy text dataset.Term frequency shows the frequency the word is used in books provided, weighted by the length of the book. Inverse term frequency indicates number of documents in the corpus that contain the word. The multiply of tf and idf is often used to show how important a word is to a document in a collection. For more information about tf and idf, you can look at [this](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).   
 The arguments are following: 
@@ -93,6 +93,13 @@ tidy_books %>%
   bind_tf_idf(word, book, n) %>%
   arrange(desc(tf_idf))
 ```
+=======
+
+```{r}
+# add an example of a viz involving get_sentiments
+```
+
+>>>>>>> f9586705451d3f76ba34b44d5f5ce89e0fb0686a
 ## get_sentiments() 
 
 <br> The get_sentiments is a function that allows us to get specific sentiment lexicons with appropriate categories for the words. The three general purpose lexicons are AFINN, bing, nrc: 
@@ -119,5 +126,5 @@ cleaned_books %>%
 
 
 # Application Uses 
-Think about senarios that we can use tidytext to process information? Why it is useful? Can you think of limitation of it? 
+Think about scenarios that we can use tidytext to process information? Why it is useful? Can you think of limitation of it? 
 
