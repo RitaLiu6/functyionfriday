@@ -22,6 +22,7 @@ knitr::opts_chunk$set(echo = TRUE,
 ```{r}
 library(tidytext)
 library(janeaustenr)
+library(gutenbergr)
 library(dplyr)
 library(stringr)
 library(ggplot2)
@@ -56,26 +57,44 @@ tidy_books
 ```
 
 
-# stop_words and interaction with dplyr
+## Using Tidytext with dplyr & Stop words
+
 ```{r}
-cleaned_books <- tidy_books %>%
-  anti_join(stop_words %>% filter(lexicon == "SMART"),
-            by = 'word')
-cleaned_books
+books <- gutenberg_works() #assigning gutenberg_works to "books" so we can parse through the list of books
+oliver_twist <- gutenberg_download(730, mirror = "http://mirrors.xmission.com/gutenberg/") #downloading Oliver Twist, my book of choice
 ```
 
 ```{r}
-#loading required packages
-library(dplyr)
-library(janeaustenr)
-library(tidytext)
-
-book_words <- austen_books() %>%
+common_words_twist <- oliver_twist %>%
   unnest_tokens(word, text) %>% #using unnest_tokens to turn sentences from each book into a long list of words for analysis, there are a total of 725,055 rows in this dataset.
-    anti_join(stop_words, by = "word") %>% #using dplyr to get rid of stop words (explain dpyr)
-  count(book, word, sort = TRUE) #counting the occurrence of each word and sorting them by how often they occur. 
+  count(word, sort = TRUE) #counting the occurrence of each word and sorting them by how often they occur. 
 
-book_words
+head(common_words_twist, 15)
+```
+
+As we can see, the list of words that our code returns is quite uninteresting. For analysis, words such as "the," "and," "to," and "of," essentially filler words, are usually not too useful in terms of textual analysis. To prevent this from happening, we can get rid of the *stop words*. Stop words are a set of words that contain little useful information to analysis. In moving forward with our analysis, we can get rid of these words using dplyr to get a more useful set of words to work with.
+
+```{r}
+common_words_twist_sub <- oliver_twist %>%
+  unnest_tokens(word, text) %>% #using unnest_tokens to turn sentences from each book into a long list of words for analysis, there are a total of 725,055 rows in this dataset.
+  anti_join(stop_words, by = "word") %>% #using dplyr to get rid of stop words (explain dpyr)
+  count(word, sort = TRUE) #counting the occurrence of each word and sorting them by how often they occur.
+
+twist <- head(common_words_twist_sub, 15)
+twist
+```
+
+We can see in our table above that the entire list of 15 most-used words has completely changed after removing our stop words. Removing stop words can prove to be a useful tool in our analysis. Finally, we can use ggplot2 to visualize our results.
+
+```{r}
+twist %>% #take our list of the top 15 most commonly used words
+  ggplot(aes(y = word, x = n)) +
+  labs(x = "Number of times used",
+       y = "Word",
+       title = "Most commonly used words in Olver Twist",
+       subtitle = "It seems as though the words 'oliver,' 'replied', and 'bumble' appear the most in the novel.") +
+  theme_minimal() +
+  geom_col() #create a bar graph
 ```
 
 
@@ -95,11 +114,9 @@ tidy_books %>%
 ```
 
 
-```{r}
-# add an example of a viz involving get_sentiments
-```
-
 ## get_sentiments() 
+
+
 
 <br> The get_sentiments is a function that allows us to get specific sentiment lexicons with appropriate categories for the words. The three general purpose lexicons are AFINN, bing, nrc: 
 
@@ -112,6 +129,15 @@ positive <- get_sentiments("bing") %>%
   filter(sentiment == "positive") # This filters the entire dataset to look for unigrams (single words) that have positive connotations
 positive
 ```
+
+```{r}
+cleaned_books <- tidy_books %>%
+  anti_join(stop_words %>% filter(lexicon == "SMART"),
+            by = 'word')
+cleaned_books
+```
+
+
 ```{r}
 cleaned_books %>% 
   semi_join(positive, by = "word") %>%
