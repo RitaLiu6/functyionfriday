@@ -113,6 +113,15 @@ positive <- get_sentiments("bing") %>%
   filter(sentiment == "positive") # This filters the entire dataset to look for unigrams (single words) that have positive connotations
 positive
 ```
+
+```{r}
+cleaned_books <- tidy_books %>%
+  anti_join(stop_words %>% filter(lexicon == "SMART"),
+            by = 'word')
+cleaned_books
+```
+
+
 ```{r}
 cleaned_books %>% 
   semi_join(positive, by = "word") %>%
