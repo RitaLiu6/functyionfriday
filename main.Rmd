@@ -8,9 +8,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-# Resource:  
+## Resources
 
-## Setting Up R: 
+* [Introduction to tidytext](https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html) by Julia Silge and David Robinson. We get a lot of help from this document. 
+* [Text Mining with R](https://www.tidytextmining.com/index.html)  by Julia Silge and David Robinson. This is comprehensive overview about how to deal with text in R. 
+* [Package ‘tidytext’](https://cran.r-project.org/web/packages/tidytext/tidytext.pdf). An official document listing all the functions in tidytext and their usage.
+
+## Set Up: 
 ```{r}
 library(tidytext)
 library(janeaustenr)
@@ -19,6 +23,7 @@ library(stringr)
 library(ggplot2)
 ```
 
+Here, we will use `austen_books()` to load Austen's 6 completed, published novels, mutate the dataset to obtain the chapter and line of each line. 
 ```{r}
 # load materials
 original_books <- austen_books() %>%
@@ -32,13 +37,50 @@ original_books
 
 ## Introduction
 What is tidytext and why is it useful?
-## unnest_tokens()
+
+
+## Use unnest_tokens() to process the data frame
+`unnest_tokens()` in tidytext helps us to split a column into shorter phrases of our choice. The arguments are as following:  
+* output: the name for the output column   
+* input: the name of input column that gets split  
+* token: how we want to split the column. Default is "words". Other options are "characters", "character_shingles", "ngrams", "skip_ngrams", "sentences", "lines", "paragraphs", "regex", "tweets" . 
+
 ```{r}
 tidy_books <- original_books %>%
   filter(book == 'Sense & Sensibility') %>% 
-  unnest_tokens(word, text, token = "ngrams", n = 3)
-
+  unnest_tokens(word, text)
+# token = "regex",  pattern = "Chapter [\\\\d]" ?? How to use regex
 tidy_books
+```
+```{r}
+tidy_books %>% 
+  count(book, word, sort = TRUE) %>% 
+  anti_join(stop_words) %>% 
+  bind_tf_idf(word, book, n) %>%
+  arrange(desc(tf))
+```
+
+
+# stop_words and interaction with dplyr
+```{r}
+cleaned_books <- tidy_books %>%
+  anti_join(stop_words %>% filter(lexicon == "SMART"),
+            by = 'word')
+cleaned_books
+```
+
+```{r}
+#loading required packages
+library(dplyr)
+library(janeaustenr)
+library(tidytext)
+
+book_words <- austen_books() %>%
+  unnest_tokens(word, text) %>% #using unnest_tokens to turn sentences from each book into a long list of words for analysis, there are a total of 725,055 rows in this dataset.
+    anti_join(stop_words, by = "word") %>% #using dplyr to get rid of stop words (explain dpyr)
+  count(book, word, sort = TRUE) #counting the occurrence of each word and sorting them by how often they occur. 
+
+book_words
 ```
 
 ## get_sentiments() 
@@ -65,29 +107,7 @@ cleaned_books %>%
   
 ```
 
-# stop_words and interaction with dplyr
-```{r}
-cleaned_books <- tidy_books %>%
-  anti_join(stop_words %>% filter(lexicon == "SMART"),
-            by = 'word')
-cleaned_books
-```
-
-```{r}
-#loading required packages
-library(dplyr)
-library(janeaustenr)
-library(tidytext)
-
-book_words <- austen_books() %>%
-  unnest_tokens(word, text) %>% #using unnest_tokens to turn sentences from each book into a long list of words for analysis, there are a total of 725,055 rows in this dataset.
-    anti_join(stop_words, by = "word") %>% #using dplyr to get rid of stop words (explain dpyr)
-  count(book, word, sort = TRUE) #counting the occurrence of each word and sorting them by how often they occur. 
-
-book_words
-```
-
 
 # Application Uses 
-
+Think about senarios that we can use tidytext to process information? Why it is useful? Can you think of limitation of it? 
 
