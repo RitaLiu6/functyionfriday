@@ -4,8 +4,12 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE,
+                      error = TRUE)
 ```
+
 
 
 ## Resources
@@ -46,17 +50,9 @@ Tidytext is a package that allows for easier text analysis and gives analysts to
 
 ```{r}
 tidy_books <- original_books %>%
-  filter(book == 'Sense & Sensibility') %>% 
   unnest_tokens(word, text)
-# token = "regex",  pattern = "Chapter [\\\\d]" ?? How to use regex
+# token = 'regex', pattern = "Chapter|CHAPTER [\\dIVXLC]"
 tidy_books
-```
-```{r}
-tidy_books %>% 
-  count(book, word, sort = TRUE) %>% 
-  anti_join(stop_words) %>% 
-  bind_tf_idf(word, book, n) %>%
-  arrange(desc(tf))
 ```
 
 
@@ -82,11 +78,28 @@ book_words <- austen_books() %>%
 book_words
 ```
 
+<<<<<<< HEAD
+## use bind_tf_idf to get term frequency and importance
+`use_bind_tf_idf`can be used to find term frequency and inverse document frequency of a tidy text dataset.Term frequency shows the frequency the word is used in books provided, weighted by the length of the book. Inverse term frequency indicates number of documents in the corpus that contain the word. The multiply of tf and idf is often used to show how important a word is to a document in a collection. For more information about tf and idf, you can look at [this](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).   
+The arguments are following: 
+* term: the column name that contains the term  
+* document: column name that contains name or ID of the document  
+* n: column name that contains the counts of the term
+
+```{r}
+tidy_books %>% 
+  count(book, word, sort = TRUE) %>% 
+  anti_join(stop_words) %>% 
+  bind_tf_idf(word, book, n) %>%
+  arrange(desc(tf_idf))
+```
+=======
 
 ```{r}
 # add an example of a viz involving get_sentiments
 ```
 
+>>>>>>> f9586705451d3f76ba34b44d5f5ce89e0fb0686a
 ## get_sentiments() 
 
 <br> The get_sentiments is a function that allows us to get specific sentiment lexicons with appropriate categories for the words. The three general purpose lexicons are AFINN, bing, nrc: 
