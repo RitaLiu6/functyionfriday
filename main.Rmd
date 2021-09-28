@@ -107,10 +107,11 @@ twist %>% #take our list of the top 15 most commonly used words
 
 
 # Use bind_tf_idf to get term frequency and importance
-`use_bind_tf_idf`can be used to find term frequency and inverse document frequency of a tidy text dataset.Term frequency shows the frequency the word is used in books provided, weighted by the length of the book. Inverse term frequency indicates number of documents in the corpus that contain the word. The multiply of tf and idf is often used to show how important a word is to a document in a collection. For more information about tf and idf, you can look at [this](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).   
-The arguments are following: 
+`use_bind_tf_idf`can be used to find term frequency and inverse document frequency of a tidy text dataset.Term frequency shows the frequency the word is used in a book. Inverse term frequency indicates number of documents in the coolection that contain the word. The multiply of tf and idf is often used to show how important a word is to a document in a collection. For more information about tf and idf, you can look at [this](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).   
+The arguments are as following:   
+
 * term: the column name that contains the term  
-* document: column name that contains name or ID of the document  
+* document: column name that contains name or ID of the documents  
 * n: column name that contains the counts of the term
 
 ```{r}
