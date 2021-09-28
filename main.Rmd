@@ -88,7 +88,7 @@ We can see in our table above that the entire list of 15 most-used words has com
 
 ```{r}
 twist %>% #take our list of the top 15 most commonly used words
-  ggplot(aes(y = word, x = n)) +
+  ggplot(aes(y = reorder(word,n), x = n)) +
   labs(x = "Number of times used",
        y = "Word",
        title = "Most commonly used words in Olver Twist",
