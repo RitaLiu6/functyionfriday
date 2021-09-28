@@ -1,6 +1,14 @@
 ---
 title: "TidyText"
-output: html_document
+author: "Brian Lee, Rita Liu, Aaron Salot"
+date: "28 September 2021"
+output: 
+  html_document:
+    toc: TRUE
+    toc_float: TRUE
+    code_download: true
+    theme: lumen
+
 ---
 
 ```{r setup, include=FALSE}
@@ -12,13 +20,13 @@ knitr::opts_chunk$set(echo = TRUE,
 
 
 
-## Resources
+# Resources
 
 * [Introduction to tidytext](https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html) by Julia Silge and David Robinson. We get a lot of help from this document. 
 * [Text Mining with R](https://www.tidytextmining.com/index.html)  by Julia Silge and David Robinson. This is comprehensive overview about how to deal with text in R. 
 * [Package ‘tidytext’](https://cran.r-project.org/web/packages/tidytext/tidytext.pdf). An official document listing all the functions in tidytext and their usage.
 
-## Set Up: 
+# Set Up: 
 ```{r}
 library(tidytext)
 library(janeaustenr)
@@ -40,10 +48,10 @@ original_books <- austen_books() %>%
 original_books
 ```
 
-## What is Tidytext and why is it useful?
+# What is Tidytext and why is it useful?
 Tidytext is a package that allows for easier text analysis and gives analysts tools needed for text mining tools that can be used in conjunction with packages we already know, such as dplyr and ggplot2. The package makes the manipulation, representation, and visualization of text-driven datasets and analyses easier to manage. Tidytext also features sentiment analysis, which can help analysts draw large, general conclusions regarding the content of a given text through the creation of visualizations and through calculating numerical summaries in the realm of textual analysis such as a list of the most used words in a given text. Tidytext is essentially an extremely useful supplementary tool to be used in conjunction with packages we already know.
 
-## Use unnest_tokens() to process the data frame
+# Use unnest_tokens() to process the data frame
 `unnest_tokens()` in tidytext helps us to split a column into shorter phrases of our choice. The arguments are as following:  
 * output: the name for the output column   
 * input: the name of input column that gets split  
@@ -57,7 +65,7 @@ tidy_books
 ```
 
 
-## Using Tidytext with dplyr & Stop words
+# Using Tidytext with dplyr & Stop words
 
 ```{r}
 books <- gutenberg_works() #assigning gutenberg_works to "books" so we can parse through the list of books
@@ -98,7 +106,7 @@ twist %>% #take our list of the top 15 most commonly used words
 ```
 
 
-## use bind_tf_idf to get term frequency and importance
+# Use bind_tf_idf to get term frequency and importance
 `use_bind_tf_idf`can be used to find term frequency and inverse document frequency of a tidy text dataset.Term frequency shows the frequency the word is used in books provided, weighted by the length of the book. Inverse term frequency indicates number of documents in the corpus that contain the word. The multiply of tf and idf is often used to show how important a word is to a document in a collection. For more information about tf and idf, you can look at [this](https://en.wikipedia.org/wiki/Tf%E2%80%93idf).   
 The arguments are following: 
 * term: the column name that contains the term  
@@ -114,9 +122,7 @@ tidy_books %>%
 ```
 
 
-## get_sentiments() 
-
-
+# get_sentiments() 
 
 <br> The get_sentiments is a function that allows us to get specific sentiment lexicons with appropriate categories for the words. The three general purpose lexicons are AFINN, bing, nrc: 
 
